@@ -1,13 +1,25 @@
+import { InputPrompt } from "../model/input-model.js";
+import { openai } from "../config/openai.js";
+
 const sendMessage = async (req, res) => {
+  const openaiAI = openai.configuration();
+  const inputModel = new InputPrompt(req.body);
+
   try {
-    await res.status(200).json({
-      mensagem: "Mensagem enviada com sucesso!",
+    const response = await openaiAI.createCompletion(
+      openai.textCompletion(inputModel)
+    );
+
+    return res.status(200).json({
+      success: true,
+      data: response.data.choices[0].text,
     });
   } catch (error) {
-    console.error("Erro ao enviar mensagem:", error);
-
-    res.status(500).json({
-      mensagem: "Erro ao enviar mensagem",
+    return res.status(400).json({
+      sucess: false,
+      error: error.response
+        ? error.response.data
+        : "There was an inssue on the server",
     });
   }
 };
