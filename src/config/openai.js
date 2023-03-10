@@ -1,6 +1,7 @@
 import { Configuration, OpenAIApi } from "openai";
+import * as dotenv from "dotenv";
 
-class openai {
+export class openai {
   static configuration() {
     const configuration = new Configuration({
       apiKey: process.env.OPENAI_API_KEY,
@@ -19,5 +20,3 @@ class openai {
     };
   }
 }
-
-export default new openai();
